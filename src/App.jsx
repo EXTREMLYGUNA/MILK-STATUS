@@ -23,9 +23,9 @@ import {
   Grid,
 } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import config from './config';
+import config from './config.jsx'; 
 
-const API_URL = 'http://localhost:5000/api/bills';
+// const API_URL = 'http://localhost:5000/api/bills';
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,7 +53,7 @@ export default function App() {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`${API_URL}/search?query=${searchQuery}`);
+      const response = await axios.get(`${config.BASE_URL}/search?query=${searchQuery}`);
       setBills(response.data);
     } catch (error) {
       showSnackbar('Failed to search bills', error);
@@ -62,7 +62,7 @@ export default function App() {
 
   const fetchBills = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get(config.BASE_URL);
       setBills(response.data);
     } catch (error) {
       showSnackbar('Failed to fetch bills. Check backend connection.', error);
@@ -94,7 +94,7 @@ export default function App() {
       TotalAmount: (morning + evening) * rate
     };
 
-    await axios.post(API_URL, billData);
+    await axios.post(config.BASE_URL, billData);
     reset();
     fetchBills();
     showSnackbar('Bill saved successfully!', 'success');
@@ -106,7 +106,7 @@ export default function App() {
 
   const deleteBill = async (id) => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`${config.BASE_URL}/${id}`);
       fetchBills();
       showSnackbar('Bill deleted successfully!', 'success');
     } catch (error) {
@@ -293,23 +293,31 @@ export default function App() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bills?.map((bill) => (
-              <TableRow key={bill._id}>
-                <TableCell>{bill.Date ? format(new Date(bill.Date), 'dd/MM/yyyy') : 'N/A'}</TableCell>
-                <TableCell>{bill.Name}</TableCell>
-                <TableCell>{bill.Mobile}</TableCell>
-                <TableCell>{bill.Morning.toFixed(2)}</TableCell>
-                <TableCell>{bill.Evening.toFixed(2)}</TableCell>
-                <TableCell>{bill.TotalLiters.toFixed(2)}</TableCell>
-                <TableCell>{bill.Rate.toFixed(2)}</TableCell>
-                <TableCell>{bill.TotalAmount.toFixed(2)}</TableCell>
-                <TableCell>
-                  <IconButton onClick={() => deleteBill(bill._id)} color="error">
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
+{Array.isArray(bills) && bills.length > 0 ? (
+    bills.map((bill) => (
+      <TableRow key={bill._id}>
+        <TableCell>{bill.Date ? format(new Date(bill.Date), 'dd/MM/yyyy') : 'N/A'}</TableCell>
+        <TableCell>{bill.Name}</TableCell>
+        <TableCell>{bill.Mobile}</TableCell>
+        <TableCell>{bill.Morning?.toFixed(2)}</TableCell>
+        <TableCell>{bill.Evening?.toFixed(2)}</TableCell>
+        <TableCell>{bill.TotalLiters?.toFixed(2)}</TableCell>
+        <TableCell>{bill.Rate?.toFixed(2)}</TableCell>
+        <TableCell>{bill.TotalAmount?.toFixed(2)}</TableCell>
+        <TableCell>
+          <IconButton onClick={() => deleteBill(bill._id)} color="error">
+            <DeleteIcon />
+          </IconButton>
+        </TableCell>
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={9} align="center">
+        No bills found
+      </TableCell>
+    </TableRow>
+  )}
           </TableBody>
         </Table>
       </TableContainer>
