@@ -25,7 +25,7 @@ import {
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import config from './config.jsx'; 
 
-// const API_URL = 'http://localhost:5000/api/bills';
+// const API_URL = 'http://localhost:5000/api/bills'; 
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
