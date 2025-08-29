@@ -22,8 +22,8 @@ import {
   Alert,
   Grid,
 } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
-import config from './config.jsx'; 
+import DeleteIcon from '@mui/icons-material/Delete';
+import config from './config.jsx';
 
 // const API_URL = 'http://localhost:5000/api/bills'; 
 
