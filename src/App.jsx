@@ -25,8 +25,6 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import config from './config.jsx';
 
-// const API_URL = 'http://localhost:5000/api/bills'; 
-
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
